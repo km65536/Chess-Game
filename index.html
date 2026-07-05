@@ -99,6 +99,9 @@
             cursor: pointer;
             user-select: none;
             position: relative;
+            min-width: 0;
+            min-height: 0;
+            box-sizing: border-box;
         }
         .light-square {
             background-color: #f0d9b5;
@@ -128,14 +131,16 @@
             box-sizing: border-box;
         }
         .piece {
+            /* コマの絵文字化を防ぐフォント指定 */
+            font-family: 'Arial Unicode MS', 'Lucida Sans Unicode', 'Apple Symbols', 'Segoe UI Symbol', sans-serif;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
             z-index: 10;
             text-shadow: 0px 2px 4px rgba(0,0,0,0.5);
             pointer-events: none;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            height: 100%;
         }
         #overlay {
             display: none;
@@ -181,9 +186,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            font-family: 'Arial Unicode MS', 'Lucida Sans Unicode', 'Apple Symbols', 'Segoe UI Symbol', sans-serif;
         }
-
-        /* ゲームオーバー用のモーダル装飾 */
         #game-over-modal {
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -208,7 +212,7 @@
         }
 
         @media (max-width: 600px) {
-            .piece { font-size: 9vw; }
+            .piece { font-size: 10vw; }
         }
         @media (min-width: 601px) {
             .piece { font-size: 50px; }
@@ -217,7 +221,7 @@
 </head>
 <body>
 
-    <h1>Chess Game</h1>
+    <h1>Web Chess</h1>
     <div id="game-info">
         <div id="status">Initializing...</div>
         <div id="controls">
@@ -246,9 +250,10 @@
     </div>
 
     <script>
+        // \uFE0E を付与してテキストレンダリングを強制
         const SYMBOLS = {
-            'w': { 'p': '♙', 'n': '♘', 'b': '♗', 'r': '♖', 'q': '♕', 'k': '♔' },
-            'b': { 'p': '♟', 'n': '♞', 'b': '♝', 'r': '♜', 'q': '♛', 'k': '♚' }
+            'w': { 'p': '♙\uFE0E', 'n': '♘\uFE0E', 'b': '♗\uFE0E', 'r': '♖\uFE0E', 'q': '♕\uFE0E', 'k': '♔\uFE0E' },
+            'b': { 'p': '♟\uFE0E', 'n': '♞\uFE0E', 'b': '♝\uFE0E', 'r': '♜\uFE0E', 'q': '♛\uFE0E', 'k': '♚\uFE0E' }
         };
 
         let board = [];
@@ -776,7 +781,6 @@
             const overlay = document.getElementById('overlay');
             const promoModal = document.getElementById('promotion-modal');
 
-            // Hide everything first
             overModal.style.display = 'none';
             if (promoModal.style.display !== 'block') {
                 overlay.style.display = 'none';
